@@ -1,20 +1,20 @@
 {
-  "webInfLib": [
+  "hosts": [
     {
-      "contextRoot": "google.com",
+      "host": "google.com",
       "ports": "80,81"
     },
     {
-      "contextRoot": "vamshi.com",
+      "host": "vamshi.com",
       "ports": "443,445"
     },
     {
-      "contextRoot": "sabre.com",
+      "host": "sabre.com",
       "ports": "80,90"
     },
     {
-     "contextRoot": "harini.com",
-      "ports": "80,90"
+     "host": "harini.com",
+     "ports": "80,90"
     }
     
   ]

@@ -23,8 +23,8 @@
 
    tasks:
    - name: Iterate JSON
-     debug: var={{item.contextRoot}} {{ item.ports }}
-     with_items: "{{ tmpdata.webInfLib }}"
+     debug: var={{item.host}} {{ item.ports }}
+     with_items: "{{ tmpdata.hosts }}"
    
    - name: Empty file 
      file:
@@ -32,9 +32,9 @@
        path: "/tmp/servers/output.txt"
 
    - name: Check all port numbers are accessible from current host
-     shell: "/tmp/servers/checkports.sh {{ item.contextRoot }} {{ item.ports }} | tee -a /tmp/servers/output.txt"
+     shell: "/tmp/servers/checkports.sh {{ item.host }} {{ item.ports }} | tee -a /tmp/servers/output.txt"
      register: result
-     with_items: "{{ tmpdata.webInfLib }}"
+     with_items: "{{ tmpdata.hosts }}"
 
    - debug: var=item.stdout
      with_items: "{{ result.results }}"
@@ -43,9 +43,9 @@
      mail:
        host: smtp.gmail.com
        port: 587
-       username: vamshionrails@gmail.com
-       password: 
-       to: vamshionrails@gmail.com
+       username: xxxxxxx@gmail.com
+       password:  xxxxxxx
+       to: xxxx@gmail.com
        subject: Firewall Report
        attach: /tmp/servers/output.txt
        body: "System {{ ansible_hostname }} has been successfully provisioned {{ lookup('file', '/tmp/servers/output.txt') }}"
