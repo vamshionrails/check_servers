@@ -1,0 +1,14 @@
+{
+    "hosts": [
+	{    
+        "host": "example glossary",
+        "ports": "80,81,82"
+        },
+        {
+	"host": "example glossary",
+        "ports": "80,81,82"
+        }
+    ]
+    
+    
+}

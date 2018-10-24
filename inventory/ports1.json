@@ -1,0 +1,21 @@
+{
+  "webInfLib": [
+    {
+      "contextRoot": "google.com",
+      "ports": "80,81"
+    },
+    {
+      "contextRoot": "vamshi.com",
+      "ports": "443,445"
+    },
+    {
+      "contextRoot": "sabre.com",
+      "ports": "80,90"
+    },
+    {
+     "contextRoot": "harini.com",
+      "ports": "80,90"
+    }
+    
+  ]
+}

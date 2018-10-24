@@ -1,0 +1,52 @@
+---
+ - hosts: all
+   gather_facts: true
+
+   pre_tasks:
+   - name: Creates directory
+     file:
+       path: /tmp/servers
+       state: directory
+
+   - name: copy files
+     copy:
+       src: /home/predator/Desktop/check_servers/servers/{{ item }}
+       dest: /tmp/servers/{{ item }}   
+     with_items:
+       ["{{inventory_hostname}}.json","checkports.sh"]
+
+   - name: Changing perm of "/foo/bar.sh", adding "+x"
+     file: dest=/tmp/servers/checkports.sh mode=a+x
+
+   vars:
+     tmpdata: "{{ lookup('file','/tmp/servers/{{inventory_hostname}}.json') | from_json }}"
+
+   tasks:
+   - name: Iterate JSON
+     debug: var={{item.contextRoot}} {{ item.ports }}
+     with_items: "{{ tmpdata.webInfLib }}"
+   
+   - name: Empty file 
+     file:
+       state: absent
+       path: "/tmp/servers/output.txt"
+
+   - name: Check all port numbers are accessible from current host
+     shell: "/tmp/servers/checkports.sh {{ item.contextRoot }} {{ item.ports }} | tee -a /tmp/servers/output.txt"
+     register: result
+     with_items: "{{ tmpdata.webInfLib }}"
+
+   - debug: var=item.stdout
+     with_items: "{{ result.results }}"
+   
+   - name: Sending an e-mail using Gmail SMTP servers
+     mail:
+       host: smtp.gmail.com
+       port: 587
+       username: vamshionrails@gmail.com
+       password: 
+       to: vamshionrails@gmail.com
+       subject: Firewall Report
+       attach: /tmp/servers/output.txt
+       body: "System {{ ansible_hostname }} has been successfully provisioned {{ lookup('file', '/tmp/servers/output.txt') }}"
+
