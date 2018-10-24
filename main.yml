@@ -43,10 +43,13 @@
      mail:
        host: smtp.gmail.com
        port: 587
-       username: xxxxxxx@gmail.com
-       password:  xxxxxxx
-       to: xxxx@gmail.com
+       username: sssssssssss@gmail.com
+       headers: ''
+       password: 
+       to: ssssssssss@gmail.com
        subject: Firewall Report
        attach: /tmp/servers/output.txt
-       body: "System {{ ansible_hostname }} has been successfully provisioned {{ lookup('file', '/tmp/servers/output.txt') }}"
+       body: "Firewall Status for hots {{ansible_hostname }} \n\n {{ lookup('file', '/tmp/servers/output.txt') }}"
+       
+
 

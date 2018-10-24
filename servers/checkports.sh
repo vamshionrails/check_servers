@@ -1,7 +1,5 @@
 #!/bin/bash
-# Simple script to check open ports on a remote host and restart via ssh/ansible if down.
-# Assumes using unique hostnames configured in /etc/ansible/hosts
-#
+# Script to check firewall connectivity.
 
 if [ "$1" = "" ]; then
 	echo "Host and port(s) to check required."
@@ -38,7 +36,7 @@ for port in ${ports}; do
 
 	# call netcat to scan for daemon listening on port
 	if ! nc -w 1 -z ${fqdn} ${port} 2>/dev/null ; then
-	    echo "${host}:${port} PORT NOT OPENED" | tee /dev/fd/3  
+	    echo "${host}:${port}  - CLOSED" | tee /dev/fd/3  
 		case ${port} in
 			# restarting sshd
 			22)
@@ -47,14 +45,12 @@ for port in ${ports}; do
 			;;
 			# restarting web app
 			80,443,8080)
-				#ansible ${host} -m service -a "name=nginx state=restarted"
-				#ansible ${host} -m service -a "name=php-fpm state=restarted"
-				#ansible ${host} -m service -a "name=varnishd state=restarted"
+				#ansible ${host} -m service -a "name=httpd state=restarted"
 				#echo "${host}:${port} RESTARTED" | tee /dev/fd/3
 			;;
 		esac
 	else
-		echo "${host}:${port} PORT OPENED" | tee /dev/fd/3
+		echo "${host}:${port} - OPENED" | tee /dev/fd/3
 	fi
 done
 # reset globbing and fieldspace char.
